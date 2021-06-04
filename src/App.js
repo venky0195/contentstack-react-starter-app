@@ -1,6 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable import/extensions */
-/* eslint-disable no-undef */
 import React from "react"
 import { Route, Switch } from "react-router-dom"
 import Home from "./pages/index.jsx"

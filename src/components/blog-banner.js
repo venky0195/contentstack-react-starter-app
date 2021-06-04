@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable camelcase */
 import React from "react"
 
 export default function BlogBanner(props) {

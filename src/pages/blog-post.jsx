@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React from "react"
 import moment from "moment"
 import ReactHtmlParser from "react-html-parser"

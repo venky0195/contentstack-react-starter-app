@@ -1,7 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable react/prop-types */
 import React from "react"
 
 import Section from "./section"
