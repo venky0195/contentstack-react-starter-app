@@ -1,54 +1,54 @@
-import React from "react"
-import moment from "moment"
-import ReactHtmlParser from "react-html-parser"
-import Stack from "../sdk/entry"
-import Layout from "../components/layout"
+import React from "react";
+import moment from "moment";
+import ReactHtmlParser from "react-html-parser";
+import Stack from "../sdk/entry";
+import Layout from "../components/layout";
 
-import ArchiveRelative from "../components/archive-relative"
-import RenderComponents from "../components/render-components"
+import ArchiveRelative from "../components/archive-relative";
+import RenderComponents from "../components/render-components";
 
 class BlogPost extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       entry: undefined,
       banner: undefined,
       header: undefined,
       footer: undefined,
       error: { errorStatus: false, errorCode: undefined, errorData: undefined },
-    }
+    };
   }
 
   async componentDidMount() {
     try {
-      const banner = await Stack.getEntryByUrl("page", "/blog")
-      const { location } = this.props
+      const banner = await Stack.getEntryByUrl("page", "/blog");
+      const { location } = this.props;
       const blog = await Stack.getEntryByUrl("blog_post", location.pathname, [
         "author",
         "related_post",
-      ])
+      ]);
       const header = await Stack.getEntry(
         "header",
         "navigation_menu.page_reference"
-      )
-      const footer = await Stack.getEntry("footer")
+      );
+      const footer = await Stack.getEntry("footer");
       this.setState({
         entry: blog[0],
         banner: banner[0],
         header: header[0][0],
         footer: footer[0][0],
         error: { errorStatus: false },
-      })
+      });
     } catch (error) {
       this.setState({
         error: { errorStatus: true, errorCode: 404, errorData: error },
-      })
+      });
     }
   }
 
   render() {
-    const { header, footer, entry, error, banner } = this.state
-    const { history } = this.props
+    const { header, footer, entry, error, banner } = this.state;
+    const { history } = this.props;
     if (!error.errorStatus && entry) {
       return (
         <Layout
@@ -57,7 +57,13 @@ class BlogPost extends React.Component {
           seo={entry.seo}
           activeTab="Blog"
         >
-          <RenderComponents pageComponents={banner.page_components} blogsPage />
+          <RenderComponents
+            pageComponents={banner.page_components}
+            blogsPage
+            contentTypeUid="blog_post"
+            entryUid={entry.uid}
+            locale={entry.locale}
+          />
           <div className="blog-container">
             <div className="blog-detail">
               <h2>{entry.title ? entry.title : ""}</h2>
@@ -79,12 +85,12 @@ class BlogPost extends React.Component {
             </div>
           </div>
         </Layout>
-      )
+      );
     }
     if (error.errorStatus) {
-      history.push("/error", [error])
+      history.push("/error", [error]);
     }
-    return ""
+    return "";
   }
 }
-export default BlogPost
+export default BlogPost;

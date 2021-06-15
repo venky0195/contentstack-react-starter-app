@@ -1,19 +1,20 @@
-import React from "react"
+import React from "react";
 
-import Section from "./section"
-import HeroBanner from "./hero-banner"
-import BlogBanner from "./blog-banner"
-import CardSection from "./card-section"
-import TeamSection from "./team-section"
-import BlogSection from "./blog-section"
-import SectionBucket from "./section-bucket"
-import AboutSectionBucket from "./about-section-bucket"
-import SectionWithHtmlCode from "./section-with-html-code"
+import Section from "./section";
+import HeroBanner from "./hero-banner";
+import BlogBanner from "./blog-banner";
+import CardSection from "./card-section";
+import TeamSection from "./team-section";
+import BlogSection from "./blog-section";
+import SectionBucket from "./section-bucket";
+import AboutSectionBucket from "./about-section-bucket";
+import SectionWithHtmlCode from "./section-with-html-code";
 
 export default function RenderComponents(props) {
-  const { pageComponents, blogsPage, about } = props
+  const { pageComponents, blogsPage, about, contentTypeUid, entryUid, locale } =
+    props;
   return (
-    <>
+    <div data-pageref={entryUid} data-contenttype={contentTypeUid} data-locale={locale}>
       {pageComponents?.map((component, key) => {
         if (component.hero_banner) {
           return blogsPage ? (
@@ -27,12 +28,12 @@ export default function RenderComponents(props) {
               title={about ? "about" : "home"}
               key={`component-${key}`}
             />
-          )
+          );
         }
         if (component.section) {
           return (
             <Section section={component.section} key={`component-${key}`} />
-          )
+          );
         }
         if (component.section_with_buckets) {
           return about ? (
@@ -45,12 +46,12 @@ export default function RenderComponents(props) {
               section={component.section_with_buckets}
               key={`component-${key}`}
             />
-          )
+          );
         }
         if (component.from_blog) {
           return (
             <BlogSection blogs={component.from_blog} key={`component-${key}`} />
-          )
+          );
         }
         if (component.section_with_cards) {
           return (
@@ -58,7 +59,7 @@ export default function RenderComponents(props) {
               cards={component.section_with_cards.cards}
               key={`component-${key}`}
             />
-          )
+          );
         }
         if (component.section_with_html_code) {
           return (
@@ -66,7 +67,7 @@ export default function RenderComponents(props) {
               embedObject={component.section_with_html_code}
               key={`component-${key}`}
             />
-          )
+          );
         }
         if (component.our_team) {
           return (
@@ -74,9 +75,9 @@ export default function RenderComponents(props) {
               ourTeam={component.our_team}
               key={`component-${key}`}
             />
-          )
+          );
         }
       })}
-    </>
-  )
+    </div>
+  );
 }

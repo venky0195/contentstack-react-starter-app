@@ -1,16 +1,16 @@
-import React from "react"
+import React from "react";
 
-import moment from "moment"
-import { Link } from "react-router-dom"
-import ReactHtmlParser from "react-html-parser"
-import Stack from "../sdk/entry"
-import Layout from "../components/layout"
-import ArchiveRelative from "../components/archive-relative"
-import RenderComponents from "../components/render-components"
+import moment from "moment";
+import { Link } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
+import Stack from "../sdk/entry";
+import Layout from "../components/layout";
+import ArchiveRelative from "../components/archive-relative";
+import RenderComponents from "../components/render-components";
 
 class Blog extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       entry: undefined,
       blogList: [],
@@ -22,32 +22,32 @@ class Blog extends React.Component {
         errorCode: undefined,
         errorData: undefined,
       },
-    }
+    };
   }
 
   async componentDidMount() {
     try {
-      const { location } = this.props
-      const blog = await Stack.getEntryByUrl("page", location.pathname)
+      const { location } = this.props;
+      const blog = await Stack.getEntryByUrl("page", location.pathname);
       const result = await Stack.getEntry("blog_post", [
         "author",
         "related_post",
-      ])
+      ]);
       const header = await Stack.getEntry(
         "header",
         "navigation_menu.page_reference"
-      )
-      const footer = await Stack.getEntry("footer")
+      );
+      const footer = await Stack.getEntry("footer");
 
-      const archive = []
-      const blogLists = []
+      const archive = [];
+      const blogLists = [];
       result[0].forEach((blogs) => {
         if (blogs.is_archived) {
-          archive.push(blogs)
+          archive.push(blogs);
         } else {
-          blogLists.push(blogs)
+          blogLists.push(blogs);
         }
-      })
+      });
 
       this.setState({
         entry: blog[0],
@@ -56,17 +56,17 @@ class Blog extends React.Component {
         blogList: blogLists,
         archived: archive,
         error: { errorStatus: false },
-      })
+      });
     } catch (error) {
       this.setState({
         error: { errorStatus: true, errorCode: 404, errorData: error },
-      })
+      });
     }
   }
 
   render() {
-    const { header, footer, entry, error, archived, blogList } = this.state
-    const { history } = this.props
+    const { header, footer, entry, error, archived, blogList } = this.state;
+    const { history } = this.props;
 
     if (!error.errorStatus && entry) {
       return (
@@ -76,7 +76,13 @@ class Blog extends React.Component {
           seo={entry.seo}
           activeTab="Blog"
         >
-          <RenderComponents pageComponents={entry.page_components} blogsPage />
+          <RenderComponents
+            pageComponents={entry.page_components}
+            blogsPage
+            contentTypeUid="page"
+            entryUid={entry.uid}
+            locale={entry.locale}
+          />
           <div className="blog-container">
             <div className="blog-column-left">
               {blogList?.map((bloglist) => (
@@ -121,13 +127,13 @@ class Blog extends React.Component {
             </div>
           </div>
         </Layout>
-      )
+      );
     }
     if (error.errorStatus) {
-      history.push("/error", [error])
+      history.push("/error", [error]);
     }
-    return ""
+    return "";
   }
 }
 
-export default Blog
+export default Blog;
